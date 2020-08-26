@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         // Example of a call to a native method
         TextView tv = findViewById(R.id.sample_text);
         tv.setText(load.getNativeString());
-//        tv.setText( stringFromJNI());
+        tv.setText( stringFromJNI());
     }
 
     /**
