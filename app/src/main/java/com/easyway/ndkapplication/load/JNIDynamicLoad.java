@@ -5,6 +5,10 @@ public class JNIDynamicLoad {
         System.loadLibrary("dynamic-lib");
     }
 
+    protected void dd() {
+
+    }
+
     public native int getRandomNum();
 
     public native String getNativeString();

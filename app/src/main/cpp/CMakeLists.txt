@@ -1,9 +1,19 @@
 # For more information about using CMake with Android Studio, read the
-# documentation: https://d.android.com/studio/projects/add-native-code.html
+# documentation: https:# d.android.com/studio/projects/add-native-code.html
 
 # Sets the minimum version of CMake required to build the native library.
 
 cmake_minimum_required(VERSION 3.4.1)
+
+# 如果你打印不出日志可能是3.6.0之后的版本在打印日志上会出现问题
+set(var hello)
+message(${var})
+
+# 当前cmake.txt路径
+message(${CMAKE_CURRENT_LIST_FILE})
+
+# 当前cmake.txt坐在目录的路径
+message(${CMAKE_CURRENT_LIST_DIR})
 
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
@@ -42,6 +52,8 @@ add_library(
 include_directories(People/)
 include_directories(jni/)
 include_directories(base/)
+include_directories(${CMAKE_SOURCE_DIR}/base/)
+
 
 find_library( # Sets the name of the path variable.
         log-lib

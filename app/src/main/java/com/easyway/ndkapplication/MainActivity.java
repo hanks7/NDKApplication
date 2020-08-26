@@ -1,30 +1,35 @@
 package com.easyway.ndkapplication;
 
 import android.os.Bundle;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.easyway.ndkapplication.jni.JNIBasicType;
+import com.easyway.ndkapplication.jni.JNIStringType;
 import com.easyway.ndkapplication.load.JNIDynamicLoad;
+import com.easyway.ndkapplication.utils.Ulog;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Used to load the 'native-lib' library on application startup.
-    // Used to load the 'native-lib' library on application startup.
     static {
         System.loadLibrary("native-lib");
     }
+
+    JNIDynamicLoad load;
+    JNIBasicType type;
+    JNIStringType stringType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        JNIDynamicLoad load = new JNIDynamicLoad();
 
-        // Example of a call to a native method
-        TextView tv = findViewById(R.id.sample_text);
-        tv.setText(load.getNativeString());
-        tv.setText( stringFromJNI());
+        load = new JNIDynamicLoad();
+        type = new JNIBasicType();
+        stringType = new JNIStringType();
+
     }
 
     /**
@@ -32,4 +37,19 @@ public class MainActivity extends AppCompatActivity {
      * which is packaged with this application.
      */
     public native String stringFromJNI();
+
+    public void clickJNIDynamicLoad(View view) {
+        ((Button) view).setText(load.getNativeString());
+    }
+
+    public void clickJNIBasicType(View view) {
+        Ulog.i("callNativeInt", type.callNativeInt(1));
+        Ulog.i("callNativeByte", type.callNativeByte((byte) 122));
+        Ulog.i("callNativeChar", type.callNativeChar('a'));
+        Ulog.i("callNativeShort", type.callNativeShort((short)4));
+        Ulog.i("callNativeLong", type.callNativeLong(5l));
+
+        Ulog.i("getStringFromC", stringType.getStringFromC("test"));
+        stringType.handleStringByC("test");
+    }
 }

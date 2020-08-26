@@ -8,10 +8,6 @@
 #include <cassert>
 #include <cstdlib>
 #include <iostream>
-#include <android/log.h>
-
-
-
 
 using namespace std;
 
@@ -64,7 +60,6 @@ static int registerNatives(JNIEnv *env) {
 }
 
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
-//    __android_log_print(ANDROID_LOG_ERROR, "native-log", "我要看到的调试信息^_^");
     JNIEnv *env = NULL;
     //判断虚拟机状态是否有问题
     if (vm->GetEnv((void **) &env, JNI_VERSION_1_6) != JNI_OK) {
