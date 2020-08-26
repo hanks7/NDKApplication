@@ -113,3 +113,16 @@ Java_com_example_jnidemo3_jni_JNIStringType_handleStringByC(JNIEnv *env, jobject
     env->ReleaseStringUTFChars(str_, str);
 }
 
+extern "C" JNIEXPORT jstring JNICALL
+Java_com_example_jnidemo3_jni_JNIRefrenceType_handleStringArray(JNIEnv *env, jobject instance,
+                                                                jobjectArray objArray) {
+    jobject firstObj = env->GetObjectArrayElement(objArray, 0);
+    jstring firstStr_ = static_cast<jstring>(firstObj);
+    const char *firstStr = env->GetStringUTFChars(firstStr_, 0);
+    LOGD("数组长度是：%d", env->GetArrayLength(objArray));
+    LOGD("第一个元素是：%s", firstStr);
+    env->ReleaseStringUTFChars(firstStr_, firstStr);
+
+    return env->NewStringUTF(firstStr);
+}
+
