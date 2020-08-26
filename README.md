@@ -1,0 +1,2 @@
+# NDKApplication
+androidJNI学习
