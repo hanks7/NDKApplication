@@ -7,6 +7,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.easyway.ndkapplication.jni.JNIBasicType;
+import com.easyway.ndkapplication.jni.JNIRefrenceType;
 import com.easyway.ndkapplication.jni.JNIStringType;
 import com.easyway.ndkapplication.load.JNIDynamicLoad;
 import com.easyway.ndkapplication.utils.Ulog;
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     JNIDynamicLoad load;
     JNIBasicType type;
     JNIStringType stringType;
+    JNIRefrenceType jniRefrenceType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         load = new JNIDynamicLoad();
         type = new JNIBasicType();
         stringType = new JNIStringType();
+        jniRefrenceType = new JNIRefrenceType();
 
     }
 
@@ -46,10 +49,12 @@ public class MainActivity extends AppCompatActivity {
         Ulog.i("callNativeInt", type.callNativeInt(1));
         Ulog.i("callNativeByte", type.callNativeByte((byte) 122));
         Ulog.i("callNativeChar", type.callNativeChar('a'));
-        Ulog.i("callNativeShort", type.callNativeShort((short)4));
+        Ulog.i("callNativeShort", type.callNativeShort((short) 4));
         Ulog.i("callNativeLong", type.callNativeLong(5l));
 
         Ulog.i("getStringFromC", stringType.getStringFromC("test"));
         stringType.handleStringByC("test");
+        Ulog.i("getStringFromC", jniRefrenceType.handleStringArray(new String[]{"aaa", "bbb", "ccc"}));
+
     }
 }
