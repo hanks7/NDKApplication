@@ -160,3 +160,36 @@ Java_com_easyway_ndkapplication_jni_JNIAccessField_staticAccessInstanceFiedld(JN
     env->SetStaticIntField(beanClass, ageFiledId, jIntAge * 2);
 }
 
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_easyway_ndkapplication_jni_JNIAccessMethod_accessMethod(JNIEnv *env, jobject thiz,
+                                                           jobject person) {
+    jclass pJclass = env->GetObjectClass(person);
+    jmethodID mId = env->GetMethodID(pJclass, "callMethod",
+                                     "(Ljava/lang/String;)Ljava/lang/String;");
+//    jclass strClass = env->FindClass("java/lang/String");
+//    env->GetObjectField()
+    env->CallObjectMethod(person, mId, env->NewStringUTF("哈哈哈哈"));
+    jstring jstr = NULL;
+    env->CallObjectMethod(person, mId, jstr);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_easyway_ndkapplication_jni_JNIAccessMethod_accessStaticMethod(JNIEnv *env, jobject thiz,
+                                                                 jobject person) {
+    jclass pJclass = env->GetObjectClass(person);
+    jmethodID mId = env->GetStaticMethodID(pJclass, "callStaticMethod",
+                                           "([Ljava/lang/String;I)Ljava/lang/String;");
+    jclass strClass = env->FindClass("java/lang/String");
+    jint length = 20;
+    jobjectArray array = env->NewObjectArray(length, strClass, NULL);
+    jstring strItem;
+    for (int i = 0; i < length; ++i) {
+        strItem = env->NewStringUTF("string in native");
+        env->SetObjectArrayElement(array, i, strItem);
+    }
+    env->CallStaticObjectMethod(pJclass, mId, array, length);
+}
+

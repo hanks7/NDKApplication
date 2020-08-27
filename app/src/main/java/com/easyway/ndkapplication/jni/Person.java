@@ -8,9 +8,9 @@ public class Person {
 
     public String callMethod(String str) {
         if (str != null) {
-            Ulog.i("jni_proctice", "call method with " + str);
+            Ulog.i("person_jni_proctice", "call method with " + str);
         } else {
-            Ulog.i("jni_proctice", "call method with null");
+            Ulog.i("person_jni_proctice", "call method with null");
         }
         return "";
     }
@@ -18,7 +18,7 @@ public class Person {
     public static String callStaticMethod(String[] strs, int num) {
         if (strs != null) {
             for (String str : strs) {
-                Ulog.i("jni_proctice", "str is:" + str);
+                Ulog.i("person_jni_proctice", "str is:" + str);
             }
         }
         return "";
