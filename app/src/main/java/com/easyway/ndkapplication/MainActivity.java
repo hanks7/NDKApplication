@@ -6,9 +6,11 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.easyway.ndkapplication.jni.ICallback;
 import com.easyway.ndkapplication.jni.JNIAccessField;
 import com.easyway.ndkapplication.jni.JNIAccessMethod;
 import com.easyway.ndkapplication.jni.JNIBasicType;
+import com.easyway.ndkapplication.jni.JNIInvokeMethod;
 import com.easyway.ndkapplication.jni.JNIRefrenceType;
 import com.easyway.ndkapplication.jni.JNIStringType;
 import com.easyway.ndkapplication.jni.Person;
@@ -52,37 +54,47 @@ public class MainActivity extends AppCompatActivity {
 
 
         //<editor-fold desc="Java与JNI基础数据类型转换">
-        Ulog.i("callNativeInt", type.callNativeInt(1));
-        Ulog.i("callNativeByte", type.callNativeByte((byte) 122));
-        Ulog.i("callNativeChar", type.callNativeChar('a'));
-        Ulog.i("callNativeShort", type.callNativeShort((short) 4));
-        Ulog.i("callNativeLong", type.callNativeLong(5l));
+        Ulog.i("Java与JNI基础数据类型转换callNativeInt", type.callNativeInt(1));
+        Ulog.i("Java与JNI基础数据类型转换callNativeByte", type.callNativeByte((byte) 122));
+        Ulog.i("Java与JNI基础数据类型转换callNativeChar", type.callNativeChar('a'));
+        Ulog.i("Java与JNI基础数据类型转换callNativeShort", type.callNativeShort((short) 4));
+        Ulog.i("Java与JNI基础数据类型转换callNativeLong", type.callNativeLong(5l));
         //</editor-fold>
 
         //<editor-fold desc="Java与JNI字符串转换">
-        Ulog.i("getStringFromC", stringType.getStringFromC("test"));
+        Ulog.i("Java与JNI字符串转换", stringType.getStringFromC("test"));
 
 
         stringType.handleStringByC("test");
-        Ulog.i("getStringFromC", jniRefrenceType.handleStringArray(new String[]{"aaa", "bbb", "ccc"}));
+        Ulog.i("Java与JNI字符串转换", jniRefrenceType.handleStringArray(new String[]{"aaa", "bbb", "ccc"}));
         //</editor-fold>
 
         //<editor-fold desc="Java与JNI引用类型转换">
         JNIAccessField jniAccessField = new JNIAccessField();
         Person person = new Person();
-        Ulog.i("jni_proctice", "修改前 person:" + person);
+        Ulog.i("Java与JNI引用类型转换", "修改前 person:" + person);
         jniAccessField.accessFile(person);
-        Ulog.i("jni_proctice", "修改后 person:" + person);
+        Ulog.i("Java与JNI引用类型转换", "修改后 person:" + person);
 
 
         jniAccessField.staticAccessInstanceFiedld();
-        Ulog.i("jniAccessField", "修改后 jniAccessField.age:" + jniAccessField.age);
+        Ulog.i("Java与JNI引用类型转换", "修改后 jniAccessField.age:" + jniAccessField.age);
         //</editor-fold>
 
         //<editor-fold desc="NI调用对象的方法和类的静态方法">
         JNIAccessMethod jniAccessMethod = new JNIAccessMethod();
         jniAccessMethod.accessMethod(new Person());//JNI调用对象的方法
         jniAccessMethod.accessStaticMethod(new Person());//JNI调用类的静态方法
+        //</editor-fold>
+
+        //<editor-fold desc="JNI访问Java接口(interface)的方法">
+        final JNIInvokeMethod jniInvokeMethod = new JNIInvokeMethod();
+        jniInvokeMethod.nativeCallback(new ICallback() {
+            @Override
+            public void callback() {
+                Ulog.i("JNI访问Java接口(interface)的方法", "callback");
+            }
+        });
         //</editor-fold>
     }
 }
