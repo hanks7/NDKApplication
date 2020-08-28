@@ -7,6 +7,7 @@
 #include <base.h>
 #include <People.h>
 #include <string>
+#include <pthread.h>
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_easyway_ndkapplication_MainActivity_stringFromJNI(
@@ -204,3 +205,41 @@ Java_com_easyway_ndkapplication_jni_JNIInvokeMethod_nativeCallback(JNIEnv *env, 
     jmethodID mId = env->GetMethodID(pJclass, "callback", "()V");
     env->CallVoidMethod(callback, mId);
 }
+
+//<editor-fold desc="JNI子线程访问Java方法">
+JNIEnv *env;
+JavaVM *vm_;
+jobject threadObject;
+jclass threadClazz;
+jmethodID threadMethod;
+
+
+void *threadCallback(void *) {
+    JNIEnv *env = nullptr;
+    if (vm_->AttachCurrentThread(&env, nullptr) == 0) {
+        env->CallVoidMethod(threadObject, threadMethod);//调用java的方法
+        vm_->DetachCurrentThread();
+    }
+    return 0;
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_easyway_ndkapplication_jni_JNIInvokeMethod_nativeThreadCallback(JNIEnv *env, jobject thiz,
+                                                                   jobject callback) {
+    threadObject = env->NewGlobalRef(callback);
+    threadClazz = env->GetObjectClass(callback);
+    threadMethod = env->GetMethodID(threadClazz, "threadCallback", "()V");
+    pthread_t handle;
+    pthread_create(&handle, nullptr, threadCallback, nullptr);
+}
+
+JNIEXPORT int JNICALL JNI_OnLoad(JavaVM *vm, void *unused) {
+    LOGD("JNI_OnLoad...");
+    vm_ = vm;
+    if (vm->GetEnv((void **) &env, JNI_VERSION_1_6) != JNI_OK) {
+        return -1;
+    }
+    return JNI_VERSION_1_6;
+}
+//</editor-fold>

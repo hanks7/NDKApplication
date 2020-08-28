@@ -7,6 +7,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.easyway.ndkapplication.jni.ICallback;
+import com.easyway.ndkapplication.jni.IThreadCallback;
 import com.easyway.ndkapplication.jni.JNIAccessField;
 import com.easyway.ndkapplication.jni.JNIAccessMethod;
 import com.easyway.ndkapplication.jni.JNIBasicType;
@@ -93,6 +94,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void callback() {
                 Ulog.i("JNI访问Java接口(interface)的方法", "callback");
+            }
+        });
+        //</editor-fold>
+
+        //<editor-fold desc="JNI子线程访问Java方法">
+        jniInvokeMethod.nativeThreadCallback(new IThreadCallback() {
+            @Override
+            public void threadCallback() {
+                Ulog.i("JNI子线程访问Java方法", "nativeThreadCallback:" + Thread.currentThread().getName());
             }
         });
         //</editor-fold>
